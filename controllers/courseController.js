@@ -12,6 +12,7 @@ const coursesParams = (query) => {
         { key: "discount", value: query.discount },
         { key: "isActive", value: query.isActive, type: "boolean" },
         { key: "unit", value: query.unit, operator: "equal" },
+        { key: "index", value: query.index, operator: "equal" },
     ]
 }
 
