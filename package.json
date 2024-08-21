@@ -16,7 +16,7 @@
   },
   "author": "ME",
   "engines": {
-    "node": "19.7.0"
+    "node": "20"
   },
   "license": "ISC",
   "dependencies": {
