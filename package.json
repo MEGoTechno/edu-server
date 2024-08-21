@@ -14,10 +14,10 @@
     "seed:import": "node backend/model/seed",
     "seed:delte": "node backend/model/seed -d"
   },
+  "author": "ME",
   "engines": {
     "node": "19.7.0"
   },
-  "author": "ME",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.4.0",
