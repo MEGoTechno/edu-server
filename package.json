@@ -7,11 +7,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server",
+    "start": "node server",
     "client": "npm start --prefix ../app",
     "myapp": "concurrently \"npm run server\" \"npm run client\"",
     "platform": "concurrently \"npm run server\" \"npm start --prefix ../elshamy\"",
     "seed:import": "node backend/model/seed",
     "seed:delte": "node backend/model/seed -d"
+  },
+  "engines": {
+    "node": "19.7.0"
   },
   "author": "ME",
   "license": "ISC",
