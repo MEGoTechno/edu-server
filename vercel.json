@@ -11,10 +11,5 @@
             "src": "/(.*)",
             "dest": "/"
         }
-    ],
-    "functions": {
-        "routes/**/*.js": {
-            "maxDuration": 40
-        }
-    }
+    ]
 }
