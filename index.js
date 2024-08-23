@@ -53,7 +53,7 @@ app.use("/api/statistics", statisticsRoutes)
 
 app.get("/test", async (req, res, next) => {
     try {
-        const users = UserModel.find()
+        const users = await UserModel.find()
         res.json(users)
     } catch (error) {
         res.json(error)
