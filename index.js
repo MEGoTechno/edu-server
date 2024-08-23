@@ -24,6 +24,7 @@ const lecturesRoutes = require("./routes/lectureRoutes")
 
 const userCourseRoutes = require("./routes/userCourseRoutes")
 const statisticsRoutes = require("./routes/statisticsRoutes")
+const UserModel = require("./models/UserModel")
 
 // config
 dotenv.config()
@@ -50,7 +51,14 @@ app.use("/api/content/lectures", lecturesRoutes)
 app.use("/api/user_courses", userCourseRoutes)
 app.use("/api/statistics", statisticsRoutes)
 
-app.get("/test", (req, res, next) => res.json({ url: DB_URI }))
+app.get("/test", async (req, res, next) => {
+    try {
+        const users = UserModel.find()
+        res.json(users)
+    } catch (error) {
+        res.json(error)
+    }
+})
 // for secure folders
 app.use("/secure", verifyToken, (req, res, next) => {
     next()
