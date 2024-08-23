@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors({
-    origin: process.env.ORIGIN
+    origin: ['https://online-platform-eight.vercel.app/']
 }))
 process.env.NODE_ENV === 'development' && app.use(morgan('tiny'))
 
