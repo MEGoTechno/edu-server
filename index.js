@@ -31,7 +31,9 @@ dotenv.config()
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+app.use(cors({
+    origin: process.env.ORIGIN
+}))
 process.env.NODE_ENV === 'development' && app.use(morgan('tiny'))
 
 const port = process.env.PORT || 5001
