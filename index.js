@@ -69,12 +69,17 @@ app.use("/secure", express.static("secure"))
 app.use(notFound)
 app.use(errorrHandler)
 
-
-
-app.listen(port, async () => {
+const connectDb = async () => {
     await mongoose.connect(DB_URI).then(() => {
         console.log('DB connected successfully')
     })
+}
+connectDb()
+
+app.listen(port, async () => {
+    // await mongoose.connect(DB_URI).then(() => {
+    //     console.log('DB connected successfully')
+    // })
 
     console.log(`the app is working on port: ${port}`)
 })
