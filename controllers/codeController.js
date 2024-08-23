@@ -21,6 +21,10 @@ const codeParams = (query) => {
 const getCodes = getAll(CodeModel, 'codes', codeParams)
 const getOneCode = getOne(CodeModel)
 
+
+// @desc recharge code
+// @route POST /codes/verify
+// @access Private (user.online)
 const verifyCode = expressAsyncHandler(async (req, res, next) => {
     //wallet
     const userCode = req.body.code

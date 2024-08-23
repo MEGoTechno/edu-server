@@ -19,6 +19,7 @@ const userParams = (query) => {
         { key: "email", value: query.email },
         { key: "phone", value: query.phone },
         { key: "familyPhone", value: query.familyPhone },
+        { key: "wallet", value: query.wallet, type: 'number' },
         { key: "isActive", value: query.isActive, type: "boolean" },
         { key: "grade", value: query.grade, operator: "equal" },
         { key: "group", value: query.group, operator: "equal" },

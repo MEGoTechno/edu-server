@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const gradeConstants = require("../tools/constants/gradeConstants")
 const UnitModel = require("./UnitModel")
 const CourseModel = require("./CourseModel")
+const VideoModel = require("./VideoModel")
 
 
 const lectureSchema = new mongoose.Schema({
@@ -14,11 +15,7 @@ const lectureSchema = new mongoose.Schema({
     isActive: { type: Boolean, required: true, default: true },
 
     video: {
-        original_filename: { type: String },
-        url: { type: String },
-        size: { type: Number },
-        resource_type: { type: String },
-        format: { type: String }
+        type: mongoose.Schema.Types.ObjectId, ref: VideoModel, required: true, select: false
     },
     thumbnail: {
         original_filename: { type: String },

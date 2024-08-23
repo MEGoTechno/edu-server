@@ -13,8 +13,8 @@
         }
     ],
     "functions": {
-        "**/*.js": {
-            "maxDuration": 50
+        "routes/**/*.js": {
+            "maxDuration": 40
         }
     }
 }

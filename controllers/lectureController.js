@@ -4,6 +4,7 @@ const expressAsyncHandler = require("express-async-handler");
 const { addToCloud, deleteFromCloud } = require("../middleware/cloudinary");
 const createError = require("../tools/createError");
 const { FAILED, SUCCESS } = require("../tools/statusTexts");
+const VideoModel = require("../models/VideoModel");
 
 
 const lectureParams = (query) => {
@@ -14,6 +15,7 @@ const lectureParams = (query) => {
         { key: "name", value: query.name },
         { key: "description", value: query.description },
         { key: "isActive", value: query.isActive, type: "boolean" },
+        { key: "_id", value: query._id },
 
     ]
 }
@@ -28,9 +30,7 @@ const createLecture = expressAsyncHandler(async (req, res, next) => {
     const { files } = req
     let results = {}
 
-
     for (let file in files) {
-
         const result = await addToCloud(files[file][0].path, {
             folder: "admin",
             resource_type: "auto"
@@ -43,7 +43,9 @@ const createLecture = expressAsyncHandler(async (req, res, next) => {
     }
 
     if (files && results.video) {
-        lecture.video = results.video
+        // lecture.video = results.video
+        const video = await VideoModel.create(results.video)
+        lecture.video = video._id
     }
 
     if (files && results.thumbnail) {
@@ -85,7 +87,7 @@ const updateLecture = expressAsyncHandler(async (req, res, next) => {
 
     if (files && results.video) {
         //remove vid pre
-        savedLecture.video = results.video
+        await VideoModel.findByIdAndUpdate(savedLecture.video, results.video)
     }
 
     if (files && results.thumbnail) {
@@ -101,11 +103,12 @@ const updateLecture = expressAsyncHandler(async (req, res, next) => {
 const deleteLecture = expressAsyncHandler(async (req, res, next) => {
     const id = req.params.id
 
-    const lecture = await LectureModel.findById(id)
+    const lecture = await LectureModel.findById(id).populate('video')
 
     if (lecture) {
         if (lecture.video?.url) {
             await deleteFromCloud(lecture.video.url)
+            await VideoModel.findByIdAndDelete(lecture.video._id)
         }
 
         if (lecture.thumbnail?.url) {

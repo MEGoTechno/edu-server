@@ -12,7 +12,7 @@ const statusTexts = require("../tools/statusTexts.js")
 const login = asyncHandler(async (req, res, next) => {
     const { userName, password } = req.body
 
-    const select = 'userName name password avatar email isAdmin phone familyPhone isActive role totalPoints payments'
+    const select = 'userName name password avatar email isAdmin phone familyPhone isActive role totalPoints wallet'
     const user = await UserModel.findOne({ userName }).populate("grade group").select(select)
 
     if (user) {

@@ -12,7 +12,7 @@ const statusTexts = require("../tools/statusTexts")
 //     { key: "grade", value: query.grade, operator: "equal" },
 //     { key: "group", value: query.group, operator: "equal" },
 // ]
-exports.getAll = (Model, docName, params = []) =>
+exports.getAll = (Model, docName, params = [], populate = '') =>
     asyncHandler(async (req, res) => {
 
         const query = req.query
@@ -24,7 +24,9 @@ exports.getAll = (Model, docName, params = []) =>
 
         // search && filter
         const match = {}
-        makeMatch(match, params(query))
+        if (params.length > 0) {
+            makeMatch(match, params(query))
+        }
 
         //sort 
         const sort = {}
@@ -33,8 +35,8 @@ exports.getAll = (Model, docName, params = []) =>
         //select
         const select = query.select ? query.select : ""
 
-        //populate
-        const populate = req.populate || ""
+        // //populate
+        // const populate = req.populate || ""
 
         const docs = await Model.find(match).select(select).populate(populate).limit(limit).skip(skip).sort(sort)
         const count = await Model.countDocuments(match)
