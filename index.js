@@ -33,7 +33,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors(
     {
-        origin: ['https://online-platform-eight.vercel.app'],
+        origin: ['https://online-platform-eight.vercel.app', 'http://localhost:3000'],
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true
     }

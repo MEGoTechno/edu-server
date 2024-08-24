@@ -18,16 +18,27 @@ const userCoursesParams = (query) => {
 const getAllUsersCourses = getAll(UserCourseModel, 'usersCourses', userCoursesParams)
 
 const getUserCourses = expressAsyncHandler(async (req, res, next) => {
+    const select = req.query
     const user = req.user
 
     const match = { user: user._id }
     makeMatch(match, userCoursesParams(req.query))
 
-    const userCourses = await UserCourseModel.find(match)
+    const userCourses = await UserCourseModel.find(match).select(select).populate('course')
 
     res.status(200).json({ status: SUCCESS, values: userCourses })
 })
 
+const getOneUserCourse = expressAsyncHandler(async (req, res, next) => {
+    const user = req.user
+    const course = req.params.courseId
+
+    const match = { user: user._id, course }
+
+    const userCourse = await UserCourseModel.findOne(match)
+
+    res.status(200).json({ status: SUCCESS, values: userCourse })
+})
 
 const subscribe = expressAsyncHandler(async (req, res, next) => {
     const user = req.user
@@ -61,4 +72,4 @@ const subscribe = expressAsyncHandler(async (req, res, next) => {
     res.status(200).json({ status: SUCCESS, values: { userCourse, wallet: user.wallet }, message: 'You have subscribed to ' + course.name })
 })
 
-module.exports = { getAllUsersCourses, subscribe, getUserCourses }
+module.exports = { getAllUsersCourses, getOneUserCourse, subscribe, getUserCourses }
