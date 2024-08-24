@@ -31,9 +31,13 @@ dotenv.config()
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors({
-    origin: ['https://online-platform-eight.vercel.app/']
-}))
+app.use(cors(
+    {
+        origin: ['https://online-platform-eight.vercel.app'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        credentials: true
+    }
+))
 process.env.NODE_ENV === 'development' && app.use(morgan('tiny'))
 
 const port = process.env.PORT || 5001
