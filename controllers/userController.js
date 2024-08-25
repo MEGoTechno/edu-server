@@ -95,13 +95,17 @@ const updateUser = asyncHandler(async (req, res, next) => {
     //select
     const select = query.select ? query.select : ""
 
-    const user = await UserModel.findById(id).select(select).populate("group")
+    const user = await UserModel.findById(id) //.select(select) populate
     if (!user) return next(createError("No users found ..!", 404, statusTexts.FAILED))
 
     user.name = name || user.name
     user.email = email || user.email
     user.phone = phone || user.phone
     user.familyPhone = familyPhone || user.familyPhone
+
+    if (user.role === user_roles.ADMIN && !isActive) return next(createError('لا يمكن الغاء تفعيل الادمن .'))
+    if (user.role === user_roles.ADMIN && role !== user_roles.ADMIN) return next(createError('لا يمكن الغاء تفعيل الادمن .'))
+
     user.isActive = typeof isActive === "boolean" ? isActive : user.isActive
     user.role = role || user.role
 
@@ -138,7 +142,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     const user = await UserModel.findById(id)
 
     const file = req.file
-    
+
     let avatar = {}
 
     if (file) {
@@ -187,8 +191,8 @@ const deleteUser = asyncHandler(async (req, res, next) => {
         next(error)
     }
 
-    await user.remove();
-    res.status(200).json({ status: statusTexts.SUCCESS, message: "User delete successfuly" })
+    await UserModel.findByIdAndDelete(id)
+    res.status(200).json({ status: statusTexts.SUCCESS, message: "User deleted successfuly" })
 })
 
 

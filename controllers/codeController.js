@@ -34,7 +34,7 @@ const verifyCode = expressAsyncHandler(async (req, res, next) => {
     if (!userCode) return next(createError('invalid data', 404, FAILED))
 
     const code = await CodeModel.findOne({ code: userCode })
-    if (!code) return next(createError('invalid data', 404, FAILED))
+    if (!code) return next(createError('invalid code', 404, FAILED))
 
     if (code.numbers === 0 || !code.isActive) return next(createError('sorry, this code is invalid', 400, FAILED))
 
