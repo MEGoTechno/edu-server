@@ -131,16 +131,14 @@ const updateUser = asyncHandler(async (req, res, next) => {
 // @access Public   ==> admin/user/subAdmin
 const updateUserProfile = asyncHandler(async (req, res, next) => {
 
-    const query = req.query
-    const { id, userName, name, email, password, phone, familyPhone } = req.body
+    const id = req.params.id
+    const { userName, name, email, password, phone, familyPhone } = req.body
 
     //select
-    const select = query.select ? query.select : ""
+    const user = await UserModel.findById(id)
 
-    const user = await UserModel.findById(_id).select(select).populate("grade group")
-
-
-    const { file } = req
+    const file = req.file
+    
     let avatar = {}
 
     if (file) {
@@ -171,8 +169,6 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     }
 
     await user.save()
-
-
     return res.status(200).json({ status: statusTexts.SUCCESS, values: user, message: "User edited successfully" })
 
 })

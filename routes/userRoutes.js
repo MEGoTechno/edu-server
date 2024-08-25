@@ -13,7 +13,7 @@ router.route("/")
 
 router.route("/:id")
     .put(verifyToken, allowedTo(user_roles.ADMIN, user_roles.SUBADMIN), updateUser)
-    // .put(verifyToken, upload.single("avatar"), updateUserProfile)
+    .patch(verifyToken, upload.single("avatar"), updateUserProfile)
     .delete(verifyToken, allowedTo(user_roles.ADMIN, user_roles.SUBADMIN), deleteUser)
 
 
