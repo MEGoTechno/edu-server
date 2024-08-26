@@ -18,7 +18,7 @@ const codeParams = (query) => {
 }
 
 
-const getCodes = getAll(CodeModel, 'codes', codeParams)
+const getCodes = getAll(CodeModel, 'codes', codeParams, 'usedBy')
 const getOneCode = getOne(CodeModel)
 
 

@@ -9,7 +9,7 @@ const coursesParams = (query) => {
         { key: "name", value: query.name },
         { key: "description", value: query.description },
         { key: "price", value: query.price },
-        { key: "discount", value: query.discount },
+        { key: "preDiscount", value: query.preDiscount },
         { key: "isActive", value: query.isActive, type: "boolean" },
         { key: "unit", value: query.unit, operator: "equal" },
         { key: "index", value: query.index, operator: "equal" },

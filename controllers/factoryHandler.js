@@ -16,6 +16,7 @@ exports.getAll = (Model, docName, params = [], populate = '') =>
     asyncHandler(async (req, res) => {
 
         const query = req.query
+        
 
         //pagination
         const limit = query.limit || 10000
@@ -45,7 +46,7 @@ exports.getAll = (Model, docName, params = [], populate = '') =>
         values[`${docName}`] = docs
         values.count = count
 
-        res.status(200).json({ status: statusTexts.SUCCESS, values })
+        return res.status(200).json({ status: statusTexts.SUCCESS, values })
 
     });
 
@@ -66,7 +67,7 @@ exports.getOne = (Model) =>
             return next('error');
         }
 
-        res.status(200).json({ status: statusTexts.SUCCESS, values: doc })
+        return res.status(200).json({ status: statusTexts.SUCCESS, values: doc })
 
     });
 
@@ -78,10 +79,10 @@ exports.insertOne = (Model, withIndex = false) =>
             const index = lastDoc?.index + 1 || 1
             req.body.index = index
             const doc = await Model.create(req.body);
-            res.status(201).json({ status: statusTexts.SUCCESS, values: doc, message: 'doc has been created successfully' })
+            return res.status(201).json({ status: statusTexts.SUCCESS, values: doc, message: 'doc has been created successfully' })
         }
         const doc = await Model.create(req.body);
-        res.status(201).json({ status: statusTexts.SUCCESS, values: doc, message: 'doc has been created successfully' })
+        return res.status(201).json({ status: statusTexts.SUCCESS, values: doc, message: 'doc has been created successfully' })
     });
 
 exports.updateOne = (Model) =>
@@ -95,7 +96,7 @@ exports.updateOne = (Model) =>
             return next('error');
         }
         await doc.save();
-        res.status(200).json({ status: statusTexts.SUCCESS, values: doc, message: 'doc has been updated successfully' })
+        return res.status(200).json({ status: statusTexts.SUCCESS, values: doc, message: 'doc has been updated successfully' })
     });
 
 exports.deleteOne = (Model) =>
@@ -109,7 +110,7 @@ exports.deleteOne = (Model) =>
 
         // Trigger "remove" event when update document
         await document.remove();
-        res.status(200).json({ status: statusTexts.SUCCESS, message: 'doc has been deleted successfully' })
+        return res.status(200).json({ status: statusTexts.SUCCESS, message: 'doc has been deleted successfully' })
     });
 
 exports.getDocCount = (Model, params = []) =>
@@ -122,5 +123,5 @@ exports.getDocCount = (Model, params = []) =>
         makeMatch(match, params(query))
 
         const count = await Model.countDocuments(match)
-        res.status(200).json({ status: statusTexts.SUCCESS, values: { count } })
+        return res.status(200).json({ status: statusTexts.SUCCESS, values: { count } })
     });

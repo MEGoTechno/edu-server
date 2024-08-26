@@ -21,7 +21,7 @@ const lectureParams = (query) => {
 }
 
 
-const getLectures = getAll(LectureModel, 'lectures', lectureParams)
+const getLectures = getAll(LectureModel, 'lectures', lectureParams, 'video')
 const getOneLecture = getOne(LectureModel)
 
 const createLecture = expressAsyncHandler(async (req, res, next) => {
@@ -53,7 +53,7 @@ const createLecture = expressAsyncHandler(async (req, res, next) => {
     }
 
     const savedLecture = await LectureModel.create(lecture)
-    res.json({ values: { lecture: savedLecture }, message: 'lecture created ...', status: SUCCESS })
+    res.json({ values: savedLecture, message: 'lecture created ...', status: SUCCESS })
 })
 
 const updateLecture = expressAsyncHandler(async (req, res, next) => {
@@ -84,7 +84,7 @@ const updateLecture = expressAsyncHandler(async (req, res, next) => {
     savedLecture.description = lecture.description || savedLecture.description
     savedLecture.isActive = lecture.isActive || savedLecture.isActive
 
-
+    console.log('files =', files)
     if (files && results.video) {
         //remove vid pre
         await VideoModel.findByIdAndUpdate(savedLecture.video, results.video)

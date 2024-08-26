@@ -15,7 +15,7 @@ const lectureSchema = new mongoose.Schema({
     isActive: { type: Boolean, required: true, default: true },
 
     video: {
-        type: mongoose.Schema.Types.ObjectId, ref: VideoModel, required: true, select: false
+        type: mongoose.Schema.Types.ObjectId, ref: VideoModel, required: true
     },
     thumbnail: {
         original_filename: { type: String },

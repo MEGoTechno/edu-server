@@ -15,7 +15,7 @@ const userCoursesParams = (query) => {
 
 
 
-const getAllUsersCourses = getAll(UserCourseModel, 'usersCourses', userCoursesParams)
+const getAllUsersCourses = getAll(UserCourseModel, 'usersCourses', userCoursesParams, 'user course')
 
 const getUserCourses = expressAsyncHandler(async (req, res, next) => {
     const select = req.query
@@ -55,12 +55,7 @@ const subscribe = expressAsyncHandler(async (req, res, next) => {
         return next(createError('You dont have anough money', 400, FAILED))
     }
 
-    if (course.discount) {
-        user.wallet = user.wallet - course.discount
-
-    } else {
-        user.wallet = user.wallet - course.price
-    }
+    user.wallet = user.wallet - course.price
 
     const userCourse = await UserCourseModel.create({
         user: user._id,
