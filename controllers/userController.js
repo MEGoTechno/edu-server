@@ -146,7 +146,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     let avatar = {}
 
     if (file) {
-        const result = await addToCloud(file.path, {
+        const result = await addToCloud(file, {
             folder: userName,
             resource_type: "auto"
         })

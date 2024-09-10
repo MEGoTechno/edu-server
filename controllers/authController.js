@@ -9,6 +9,7 @@ const createError = require("../tools/createError.js");
 const CodeModel = require("../models/CodeModel.js");
 const codeConstants = require("../tools/constants/codeConstants.js");
 const { user_roles } = require("../tools/constants/rolesConstants.js");
+const TokenModel = require("../models/TokenModel.js");
 
 // @desc user login
 // @route POST /login
@@ -24,10 +25,12 @@ const login = asyncHandler(async (req, res, next) => {
         const isTruePass = await bcrypt.compare(password, user.password)
         if (isTruePass) {
             const userDoc = user._doc
-            const token = generateToken({ id: userDoc._id })
             delete userDoc.password
 
             if (userDoc.isActive) {
+                const token = generateToken({ id: userDoc._id })
+                await TokenModel.create({ user: userDoc._id, token })
+
                 res.status(200).json({ status: statusTexts.SUCCESS, values: { ...userDoc, token }, message: "logged in successfully" })
             } else {
                 const error = createError("sorry, you are not active ", 401, statusTexts.FAILED)
@@ -83,6 +86,8 @@ const signup = asyncHandler(async (req, res, next) => {
             await foundCode.save()
 
             const token = generateToken({ id: user._id })
+            await TokenModel.create({ user: user._id, token })
+            
             const sendUser = user._doc
             delete sendUser.password
 
@@ -94,4 +99,25 @@ const signup = asyncHandler(async (req, res, next) => {
     }
 })
 
-module.exports = { login, signup }
+const logout = asyncHandler(async (req, res, next) => {
+
+    if (req.headers.authorization && req.headers.authorization !== 'undefined' && req.headers.authorization.startsWith("Bearer")) {
+        const token = req.headers.authorization
+        const session = await TokenModel.findOne({ token })
+
+        if (session) {
+            const nowDate = new Date()
+
+            session.logout = nowDate
+            await session.save()
+
+            return res.status(204).json()
+        } else {
+            return next(createError('Something went wrong', 401, statusTexts.FAILED))
+        }
+
+    } else {
+        return next(createError('Something went wrong', 401, statusTexts.FAILED))
+    }
+})
+module.exports = { login, signup, logout }

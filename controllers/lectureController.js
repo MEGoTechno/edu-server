@@ -31,7 +31,7 @@ const createLecture = expressAsyncHandler(async (req, res, next) => {
     let results = {}
 
     for (let file in files) {
-        const result = await addToCloud(files[file][0].path, {
+        const result = await addToCloud(files[file][0], {
             folder: "admin",
             resource_type: "auto"
         })
@@ -66,7 +66,7 @@ const updateLecture = expressAsyncHandler(async (req, res, next) => {
 
         for (let file in files) {
 
-            const result = await addToCloud(files[file][0].path, {
+            const result = await addToCloud(files[file][0], {
                 folder: "admin",
                 resource_type: "auto"
             })

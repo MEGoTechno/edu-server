@@ -14,6 +14,7 @@ const createError = require("./tools/createError")
 const { notFound, errorrHandler } = require("./middleware/errorsHandler")
 
 const testRoutes = require("./routes/testRoutes")
+
 const authRoutes = require("./routes/authRoutes")
 const userRoutes = require("./routes/userRoutes")
 const codeRoutes = require("./routes/codeRoutes")
@@ -24,6 +25,7 @@ const lecturesRoutes = require("./routes/lectureRoutes")
 
 const userCourseRoutes = require("./routes/userCourseRoutes")
 const statisticsRoutes = require("./routes/statisticsRoutes")
+
 const UserModel = require("./models/UserModel")
 
 // config
@@ -46,6 +48,7 @@ const DB_URI = process.env.MONGO_URI
 
 //routes config
 app.use("/api/test", testRoutes)
+app.use("/api/tokens", require("./routes/tokenRoutes"))
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/codes", codeRoutes)
@@ -57,14 +60,10 @@ app.use("/api/content/lectures", lecturesRoutes)
 app.use("/api/user_courses", userCourseRoutes)
 app.use("/api/statistics", statisticsRoutes)
 
-app.get("/test", async (req, res, next) => {
-    try {
-        const users = await UserModel.find()
-        res.json(users)
-    } catch (error) {
-        res.json(error)
-    }
-})
+
+app.get("/test", testRoutes)
+
+
 // for secure folders
 app.use("/secure", verifyToken, (req, res, next) => {
     next()
